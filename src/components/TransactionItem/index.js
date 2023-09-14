@@ -14,8 +14,9 @@ const TransactionItem = props => {
       <p>{title}</p>
       <p>Rs{amoun}</p>
       <p>{displayText}</p>
-      <button data-testid="delete" onClick={del}>
+      <button data-testid="delete" onClick={del} className="button">
         <img
+          className="btnimg"
           src="https://assets.ccbp.in/frontend/react-js/money-manager/delete.png"
           alt="delete"
         />

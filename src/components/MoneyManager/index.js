@@ -170,6 +170,7 @@ export default class MoneyManager extends Component {
                 <p>Title</p>
                 <p>Amount</p>
                 <p>Type</p>
+                <p> </p>
               </li>
               {amlis.map(each => (
                 <TransactionItem item={each} key={each.id} dele={this.delete} />
