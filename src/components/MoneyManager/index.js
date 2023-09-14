@@ -41,17 +41,21 @@ export default class MoneyManager extends Component {
 
   typc = event => {
     this.setState(prev => ({ty: event.target.value}))
-    console.log(event.target.textContent)
+    console.log(event.target.value)
   }
 
   sub = event => {
     const {title, amoun, ty} = this.state
+    const k = transactionTypeOptions.find(each => each.optionId === ty)
+    const {displayText} = k
+    console.log(k)
     event.preventDefault()
     const ni = {
       id: v4(),
       title,
       amoun,
       ty,
+      displayText,
     }
 
     this.setState(prev => ({
@@ -131,20 +135,17 @@ export default class MoneyManager extends Component {
               <label htmlFor="amoun">AMOUNT</label>
               <input id="amoun" type="text" value={amoun} onChange={this.amc} />
               <label htmlFor="type">Type</label>
-
-              <select
-                id="select"
-                className="input"
-                value={ty}
-                onChange={this.typc}
-              >
-                {transactionTypeOptions.map(eachOption => (
-                  <option key={eachOption.optionId} value={eachOption.optionId}>
-                    {eachOption.displayText}
-                  </option>
-                ))}
+              <select id="type" value={ty} onChange={this.typc}>
+                <option
+                  value={transactionTypeOptions[0].optionId}
+                  id={transactionTypeOptions[0].optionId}
+                >
+                  {transactionTypeOptions[0].displayText}
+                </option>
+                <option value={transactionTypeOptions[1].optionId}>
+                  {transactionTypeOptions[1].displayText}
+                </option>
               </select>
-
               <button type="Submit" className="but">
                 Add
               </button>
@@ -152,12 +153,13 @@ export default class MoneyManager extends Component {
           </div>
           <div className="history">
             <h1>History</h1>
-            <div className="typein">
-              <p>Title</p>
-              <p>Amount</p>
-              <p>Type</p>
-            </div>
+
             <ul className="lisy">
+              <li className="typein">
+                <p>Title</p>
+                <p>Amount</p>
+                <p>Type</p>
+              </li>
               {amlis.map(each => (
                 <TransactionItem item={each} key={each.id} />
               ))}
