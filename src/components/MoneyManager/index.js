@@ -95,6 +95,17 @@ export default class MoneyManager extends Component {
     return exp
   }
 
+  delete = id => {
+    console.log('delete entered')
+    console.log(id)
+    const {amlis} = this.state
+    const k = amlis.filter(each => each.id !== id)
+    console.log(k)
+    this.setState(prev => ({
+      amlis: [...k],
+    }))
+  }
+
   income1 = () => {
     console.log('enterd')
     const {amlis} = this.state
@@ -161,7 +172,7 @@ export default class MoneyManager extends Component {
                 <p>Type</p>
               </li>
               {amlis.map(each => (
-                <TransactionItem item={each} key={each.id} />
+                <TransactionItem item={each} key={each.id} dele={this.delete} />
               ))}
             </ul>
           </div>
