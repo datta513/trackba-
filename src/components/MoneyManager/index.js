@@ -1,6 +1,7 @@
 import {Component} from 'react'
-import {V4} from 'uuid'
+import {v4} from 'uuid'
 import MoneyDetails from '../MoneyDetails'
+import TransactionItem from '../TransactionItem'
 import './index.css'
 
 const transactionTypeOptions = [
@@ -16,10 +17,98 @@ const transactionTypeOptions = [
 
 // Write your code here
 export default class MoneyManager extends Component {
-  state = {balance: 0, income: 0, expence: 0}
+  state = {
+    balance: 0,
+    income: 0,
+    expence: 0,
+    title: '',
+    amoun: '',
+    ty: 'INCOME',
+    amlis: [],
+  }
+
+  tc = event => {
+    this.setState(prev => ({
+      title: event.target.value,
+    }))
+    console.log(event.target.value)
+  }
+
+  amc = event => {
+    this.setState(prev => ({amoun: event.target.value}))
+    console.log(event.target.value)
+  }
+
+  typc = event => {
+    this.setState(prev => ({ty: event.target.value}))
+    console.log(event.target.textContent)
+  }
+
+  sub = event => {
+    const {title, amoun, ty} = this.state
+    event.preventDefault()
+    const ni = {
+      id: v4(),
+      title,
+      amoun,
+      ty,
+    }
+
+    this.setState(prev => ({
+      amlis: [...prev.amlis, ni],
+      title: '',
+      amoun: '',
+      ty: transactionTypeOptions[0].optionId,
+    }))
+  }
+
+  bale = () => {
+    console.log('enterd')
+    const {amlis} = this.state
+    let bal = 0
+    let inc = 0
+    let exp = 0
+    amlis.forEach(each => {
+      if (each.ty === transactionTypeOptions[0].optionId) {
+        inc += parseInt(each.amoun)
+      } else {
+        exp += parseInt(each.amoun)
+      }
+    })
+    bal = inc - exp
+    console.log(bal)
+    return bal
+  }
+
+  exp = () => {
+    const {amlis} = this.state
+    let exp = 0
+    amlis.forEach(each => {
+      if (each.ty === transactionTypeOptions[1].optionId) {
+        exp += parseInt(each.amoun)
+      }
+    })
+    return exp
+  }
+
+  income1 = () => {
+    console.log('enterd')
+    const {amlis} = this.state
+    let inc = 0
+    amlis.forEach(each => {
+      if (each.ty === transactionTypeOptions[0].optionId) {
+        inc += parseInt(each.amoun)
+      }
+    })
+    return inc
+  }
 
   render() {
-    const {balance, income, expence} = this.state
+    const {ty, amoun, title, amlis} = this.state
+    const balance = this.bale()
+    const income = this.income1()
+    const expence = this.exp()
+
     return (
       <div className="main">
         <div className="details">
@@ -35,27 +124,27 @@ export default class MoneyManager extends Component {
 
         <div className="details2">
           <div className="fcont">
-            <form className="form1">
+            <form className="form1" onSubmit={this.sub}>
               <h1>Add Transaction</h1>
-              <label htmlFor="title" value="title" onChange={this.tc}>
-                TITLE
-              </label>
-              <input type="text" id="title" />
-              <label htmlFor="amoun" value="amoun" onChange={this.amc}>
-                Amount
-              </label>
-              <input id="amoun" type="text" />
-              <label htmlFor="type" value="ty" onChange={this.typc}>
-                Type
-              </label>
-              <select id="type">
-                <option value={transactionTypeOptions[0].optionId}>
-                  {transactionTypeOptions[0].displayText}
-                </option>
-                <option value={transactionTypeOptions[1].optionId}>
-                  {transactionTypeOptions[1].displayText}
-                </option>
+              <label htmlFor="title">TITLE</label>
+              <input type="text" id="title" value={title} onChange={this.tc} />
+              <label htmlFor="amoun">AMOUNT</label>
+              <input id="amoun" type="text" value={amoun} onChange={this.amc} />
+              <label htmlFor="type">Type</label>
+
+              <select
+                id="select"
+                className="input"
+                value={ty}
+                onChange={this.typc}
+              >
+                {transactionTypeOptions.map(eachOption => (
+                  <option key={eachOption.optionId} value={eachOption.optionId}>
+                    {eachOption.displayText}
+                  </option>
+                ))}
               </select>
+
               <button type="Submit" className="but">
                 Add
               </button>
@@ -63,6 +152,16 @@ export default class MoneyManager extends Component {
           </div>
           <div className="history">
             <h1>History</h1>
+            <div className="typein">
+              <p>Title</p>
+              <p>Amount</p>
+              <p>Type</p>
+            </div>
+            <ul className="lisy">
+              {amlis.map(each => (
+                <TransactionItem item={each} key={each.id} />
+              ))}
+            </ul>
           </div>
         </div>
       </div>

@@ -11,8 +11,8 @@ const MoneyDetails = props => {
           alt="balance"
         />
         <div>
-          <p>your Balance</p>
-          <p>{bal}</p>
+          <p>Your Balance</p>
+          <p data-testid="balanceAmount">{bal}</p>
         </div>
       </div>
       <div className="manage cred">
@@ -22,17 +22,17 @@ const MoneyDetails = props => {
         />
         <div>
           <p>your Income</p>
-          <p>{inc}</p>
+          <p data-testid="incomeAmount">{inc}</p>
         </div>
       </div>
       <div className="manage exp">
         <img
           src="https://assets.ccbp.in/frontend/react-js/money-manager/expenses-image.png"
-          alt="expences"
+          alt="expenses"
         />
         <div>
-          <p>Your Balance</p>
-          <p data-testid="balanceAmount">{bal}</p>
+          <p>Your Expenses</p>
+          <p data-testid="expensesAmount">{exp}</p>
         </div>
       </div>
     </div>

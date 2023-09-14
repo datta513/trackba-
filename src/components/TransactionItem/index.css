@@ -1,1 +1,5 @@
 /* Write your CSS here */
+.option {
+  display: flex;
+  justify-content: space-between;
+}
